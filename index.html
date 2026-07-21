@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Fahim Photography & Films — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    .font-geist { font-family: 'Geist', sans-serif !important; }
+    /* Custom Smooth Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #000000; }
+    ::-webkit-scrollbar-thumb { background: #1a1a1a; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #333333; }
+  </style>
+</head>
+<body class="h-full antialiased selection:bg-white selection:text-black text-neutral-100 bg-black font-geist">
+
+  <!-- Floating WhatsApp Button -->
+  <a href="https://wa.me/923312015198" target="_blank" rel="noopener noreferrer" 
+     class="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-white text-black px-4 py-3 rounded-full shadow-2xl hover:bg-neutral-200 transition-all hover:scale-105 active:scale-95 font-medium text-xs tracking-wide uppercase" 
+     aria-label="Chat on WhatsApp">
+    <i data-lucide="message-circle" class="h-5 w-5 text-emerald-600"></i>
+    <span class="hidden sm:inline">WhatsApp</span>
+  </a>
+
+  <!-- Image Lightbox Modal -->
+  <div id="imageModal" class="fixed inset-0 z-[100] hidden bg-black/95 backdrop-blur-xl flex items-center justify-center p-4">
+    <button id="closeModal" class="absolute top-6 right-6 text-white bg-neutral-900 hover:bg-neutral-800 p-3 rounded-full transition z-[110] cursor-pointer border border-neutral-800" aria-label="Close modal">
+      <i data-lucide="x" class="h-6 w-6"></i>
+    </button>
+    <div class="relative max-w-5xl max-h-[90vh] w-full h-full flex items-center justify-center">
+      <img id="modalImg" src="" alt="Popup Preview" class="max-h-[85vh] max-w-full w-auto h-auto object-contain rounded-3xl shadow-2xl border border-neutral-900">
+    </div>
+  </div>
+
+  <!-- Reviews Popup Modal -->
+  <div id="reviewsModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-xl flex items-center justify-center p-4">
+    <div class="bg-black text-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl border border-neutral-900 max-h-[90vh] overflow-y-auto">
+      <button id="closeReviewsModal" class="absolute top-6 right-6 text-white bg-neutral-900 hover:bg-neutral-800 p-2.5 rounded-full transition cursor-pointer border border-neutral-800" aria-label="Close reviews modal">
+        <i data-lucide="x" class="h-5 w-5"></i>
+      </button>
+      
+      <p class="text-[10px] uppercase tracking-widest text-neutral-500 mb-2">/Client Testimonials</p>
+      <h3 class="text-2xl sm:text-3xl font-light mb-6 tracking-tight">What Our Clients Say</h3>
+      
+      <div class="space-y-4">
+        <div class="bg-neutral-950 p-5 rounded-2xl border border-neutral-900">
+          <p class="text-sm sm:text-base text-neutral-300 italic">"Working with Fahim Photography was an absolute breeze. The aesthetic and calmness captured in our brand shoot exceeded all expectations."</p>
+          <div class="mt-4 flex items-center justify-between">
+            <span class="text-xs font-semibold text-white">Ayesha & Daniyal</span>
+            <span class="text-xs text-neutral-500">Wedding Editorial</span>
+          </div>
+        </div>
+
+        <div class="bg-neutral-950 p-5 rounded-2xl border border-neutral-900">
+          <p class="text-sm sm:text-base text-neutral-300 italic">"The level of detail, lighting, and cinematic direction is unmatched. Highly professional team!"</p>
+          <div class="mt-4 flex items-center justify-between">
+            <span class="text-xs font-semibold text-white">Hamza Khan</span>
+            <span class="text-xs text-neutral-500">Commercial Portraiture</span>
+          </div>
+        </div>
+
+        <div class="bg-neutral-950 p-5 rounded-2xl border border-neutral-900">
+          <p class="text-sm sm:text-base text-neutral-300 italic">"Super clean minimalism and timely delivery. Will definitely book again for our upcoming projects."</p>
+          <div class="mt-4 flex items-center justify-between">
+            <span class="text-xs font-semibold text-white">Zainab Malik</span>
+            <span class="text-xs text-neutral-500">Studio Session</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Album Modal -->
+  <div id="galleryModal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6">
+    <div class="bg-black text-white rounded-3xl max-w-7xl w-full p-6 sm:p-8 relative shadow-2xl border border-neutral-900 max-h-[90vh] flex flex-col z-10">
+      <div class="flex items-center justify-between pb-4 border-b border-neutral-900 shrink-0">
+        <div>
+          <p class="text-[10px] uppercase tracking-widest text-neutral-500">/Complete Album</p>
+          <h3 class="text-2xl sm:text-3xl font-light tracking-tight">All Projects Gallery (41 Photos)</h3>
+        </div>
+        <button id="closeGalleryModal" class="text-white bg-neutral-900 hover:bg-neutral-800 p-2.5 rounded-full transition cursor-pointer border border-neutral-800" aria-label="Close gallery modal">
+          <i data-lucide="x" class="h-5 w-5"></i>
+        </button>
+      </div>
+
+      <!-- Grid Container -->
+      <div class="overflow-y-auto p-2 mt-4 flex-1">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/TD0kQhrB/fahimphotographyfilms2026-07-21-10-15-33392aa4d2-1b2b-4cab-9113-709c1727ec3d.jpg" alt="Project 1">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/gZCjvkQk/fahimphotographyfilms2026-07-21-10-15-15a8c35936-c19b-4ce4-9c82-43123db2d38b.jpg" alt="Project 2">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/Q3ngmCBr/fahimphotographyfilms2026-07-21-10-15-03da4899b7-a99d-4b86-a6ca-ec02c02efc0e.jpg" alt="Project 3">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/ksrNDwx5/fahimphotographyfilms2026-07-21-10-14-490ecb1be2-b5e3-4e7a-b254-47f864a83858.jpg" alt="Project 4">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/TMFcwCpD/fahimphotographyfilms2026-07-21-10-14-453036728e-9982-4fad-97ad-890777df48a0.jpg" alt="Project 5">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/Qvz39NX8/fahimphotographyfilms2026-07-21-10-14-27ebce5bb0-3ee2-4d82-9138-e1e3e18c0325.jpg" alt="Project 6">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/spWwvRjb/fahimphotographyfilms2026-07-21-10-14-088a902e58-ab61-414a-82b3-804cb462575d.jpg" alt="Project 7">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/dsGrWT3G/fahimphotographyfilms2026-07-21-10-13-540900d8f9-3519-498d-94c9-f57f04b9d0a5.jpg" alt="Project 8">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/bYTy8kb/fahimphotographyfilms2026-07-21-10-13-3708e8b4af-bcdb-4b5f-9514-a6a295e3c1a7.jpg" alt="Project 9">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/1fq2cQ4R/fahimphotographyfilms2026-07-21-10-13-29d74e24f7-5513-407a-8eaa-d770d825157f.jpg" alt="Project 10">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/3mxmwjp7/fahimphotographyfilms2026-07-21-10-13-22def18993-da21-4809-ae1b-c08d977d5b14.jpg" alt="Project 11">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/hF55wwPT/fahimphotographyfilms2026-07-21-10-12-402fe13c27-9b10-49ca-9271-bd17edf42078.jpg" alt="Project 12">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/TBw0THs1/fahimphotographyfilms2026-07-21-10-11-208dab3759-3be9-4d27-bbc5-784189da3f80.jpg" alt="Project 13">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/K8LC696/fahimphotographyfilms2026-07-21-10-11-20349fa2d2-8a6d-4758-9f4c-339aaece6c8a.jpg" alt="Project 14">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/Tq83gVkp/fahimphotographyfilms2026-07-21-10-11-01d9e6d45c-ce00-4128-b419-013194f60af5.jpg" alt="Project 15">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/BHXvQsrn/fahimphotographyfilms2026-07-21-10-10-587f9350b3-19c1-40a1-ae8e-6c23bd883fd4.jpg" alt="Project 16">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/vxQ7RkjD/fahimphotographyfilms2026-07-21-10-10-5148e336cc-c861-45b2-be36-7a1123414f49.jpg" alt="Project 17">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/KjxWBk0W/fahimphotographyfilms2026-07-21-10-09-372408e809-91b4-49f4-b658-26b43bafee9f.jpg" alt="Project 18">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/8CYvpJM/fahimphotographyfilms2026-07-21-10-09-37a93a6ad1-9bc1-46c2-8487-7495b81fa2d2.jpg" alt="Project 19">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/hRj6F0Zc/fahimphotographyfilms2026-07-21-10-09-37c9fc4c56-416b-4831-8886-4daf8e5e9e07.jpg" alt="Project 20">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/9m0x1Xq8/fahimphotographyfilms2026-07-21-10-09-376b90809c-4009-4a7c-a4c7-81f03623aa58.jpg" alt="Project 21">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/Psmtmsrf/fahimphotographyfilms2026-07-21-10-09-37acc06bd9-d17c-4e6e-b6bc-50b46f0b50fe.jpg" alt="Project 22">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/HTjswc7T/fahimphotographyfilms2026-07-21-10-09-37b4e2bdd2-a6e6-4617-a01a-9ed5ef1fb29d.jpg" alt="Project 23">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/dJmQbnQp/fahimphotographyfilms2026-07-21-10-09-25cca0200d-e250-4206-b40d-aaf66d13522e.jpg" alt="Project 24">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/HDRhNtM1/fahimphotographyfilms2026-07-21-10-09-2523b9ec5f-fc2f-4f7b-89f1-883396101f34.jpg" alt="Project 25">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/gLXskT6N/fahimphotographyfilms2026-07-21-10-07-218eef44b2-b70b-4015-a163-3d4747cf2d52.jpg" alt="Project 26">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/0VhPQq4J/fahimphotographyfilms2026-07-21-10-06-43380a1ab2-c4aa-4066-9a6a-27f1568710ec.jpg" alt="Project 27">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/cS9sfD20/fahimphotographyfilms2026-07-21-10-06-35f155c19d-14d3-4235-8f5f-ee2d1a90514d.jpg" alt="Project 28">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/C5ktqNGs/fahimphotographyfilms2026-07-21-10-06-22953b1af8-8ab2-40c6-a04d-21a471c0d454.jpg" alt="Project 29">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/QFcBw85p/fahimphotographyfilms2026-07-21-10-06-05c421668d-9a4d-48fe-95fe-7207bb42f150.jpg" alt="Project 30">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/zhS8Pthy/fahimphotographyfilms2026-07-21-10-05-00e556a7d2-93ac-417f-8a1b-ead52222aa8e.jpg" alt="Project 31">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/mFBLNRGq/fahimphotographyfilms2026-07-21-10-05-22913570f3-f7d2-4b63-93d5-38d944389bc2.jpg" alt="Project 32">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/wm1fxPC/fahimphotographyfilms2026-07-21-10-04-41a38ab742-05ea-4fd4-88f8-50326a7a0ec0.jpg" alt="Project 33">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/d0Qktk8s/fahimphotographyfilms2026-07-21-10-04-34d2fadfc3-1a85-4e63-8589-4b934c65aa26.jpg" alt="Project 34">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/V0fPLVHB/fahimphotographyfilms2026-07-21-09-29-1935907106-f753-4782-8520-7b1e018b231c.jpg" alt="Project 35">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/ccsN1hXP/fahimphotographyfilms2026-07-21-09-29-0897c65a38-1f35-4a1e-8aab-c814d4a093f2.jpg" alt="Project 36">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/5W3QvZC5/fahimphotographyfilms2026-07-21-08-58-06e614c847-d10d-4e10-9e99-1ea5925b8fb1.jpg" alt="Project 37">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/zT0sGnjq/fahimphotographyfilms2026-07-21-08-58-069375f6b3-9fa3-41ce-946e-bf0bcc9933e3.jpg" alt="Project 38">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/Jw41rd0q/fahimphotographyfilms2026-07-21-08-58-06184dc46f-963c-41d0-bf2d-371c7f056e24.jpg" alt="Project 39">
+          </div>
+          <div class="bg-neutral-950 rounded-2xl overflow-hidden aspect-square cursor-pointer group border border-neutral-900">
+            <img class="popup-trigger w-full h-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/zTMqQdNR/fahimphotographyfilms2026-07-21-08-57-34d822d551-2ca9-4b17-9819-57c9553be09e.jpg" alt="Project 40">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="min-h-screen">
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-black/60 border-b border-neutral-900">
+      <div class="max-w-7xl sm:px-6 mr-auto ml-auto pr-4 pl-4">
+        <div class="flex bg-black border border-neutral-900 rounded-full mt-3 mb-3 pt-3 pr-6 pb-3 pl-6 items-center justify-between relative shadow-lg">
+          <div class="flex items-center gap-3">
+            <a href="#" class="text-sm font-semibold text-white tracking-widest uppercase">Fahim Rafi</a>
+          </div>
+          <nav class="hidden md:flex items-center gap-6">
+            <a class="transition hover:text-white text-xs font-medium text-neutral-400 tracking-wider uppercase" href="#portfolio-section">Work</a>
+            <a class="text-xs font-medium tracking-wider uppercase transition text-neutral-400 hover:text-white cursor-pointer" id="navGalleryBtn">Gallery</a>
+            <a class="text-xs font-medium tracking-wider uppercase transition text-neutral-400 hover:text-white" href="#about-section">About</a>
+            <a class="text-xs font-medium tracking-wider uppercase transition text-neutral-400 hover:text-white" href="mailto:fahim.photography12345@gmail.com">Contact</a>
+            <a class="inline-flex items-center gap-2 bg-white text-black hover:bg-neutral-200 text-xs font-semibold px-4 py-2 rounded-full transition tracking-wide uppercase" href="https://wa.me/923312015198" target="_blank" rel="noopener noreferrer">
+              <i data-lucide="message-circle" class="h-3.5 w-3.5 text-emerald-600"></i>
+              WhatsApp
+            </a>
+          </nav>
+          <button id="menuBtn" class="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-full border transition border-neutral-800 hover:bg-neutral-900 text-white cursor-pointer" aria-label="Menu">
+            <i data-lucide="menu" class="h-4 w-4"></i>
+          </button>
+
+          <!-- Mobile Dropdown Menu -->
+          <div id="mobileMenu" class="hidden absolute top-full left-0 right-0 mt-3 bg-black border border-neutral-900 rounded-3xl p-6 shadow-2xl flex flex-col gap-4 md:hidden z-50">
+            <a class="text-xs font-medium tracking-wider uppercase transition text-neutral-300 hover:text-white" href="#portfolio-section" id="mobileWorkBtn">Work</a>
+            <a class="text-xs font-medium tracking-wider uppercase transition text-neutral-300 hover:text-white cursor-pointer" id="mobileGalleryBtn">Gallery</a>
+            <a class="text-xs font-medium tracking-wider uppercase transition text-neutral-300 hover:text-white" href="#about-section" id="mobileAboutBtn">About</a>
+            <a class="text-xs font-medium tracking-wider uppercase transition text-neutral-300 hover:text-white" href="mailto:fahim.photography12345@gmail.com">Contact</a>
+            <a class="inline-flex items-center justify-center gap-2 bg-white text-black text-xs font-semibold px-4 py-2.5 rounded-full transition tracking-wide uppercase mt-2" href="https://wa.me/923312015198" target="_blank" rel="noopener noreferrer">
+              <i data-lucide="message-circle" class="h-4 w-4 text-emerald-600"></i>
+              WhatsApp Us
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl sm:px-6 mr-auto ml-auto pr-4 pb-0 pl-4">
+      <div class="space-y-4">
+        <!-- Hero Title -->
+        <div class="rounded-3xl mt-6 pt-4 pr-4 pb-4 pl-4 text-center sm:text-left">
+          <h1 class="text-[9vw] sm:text-[7vw] lg:text-[4.5vw] leading-[0.95] py-6 font-light tracking-tight text-white">
+            FAHIM <span class="text-neutral-600 font-light tracking-tight">PHOTOGRAPHY & FILMS</span>
+          </h1>
+        </div>
+        
+        <!-- Main Portfolio / Profile Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
+          <!-- Left: Carousel -->
+          <section class="lg:col-span-2 flex flex-col">
+            <div class="relative overflow-hidden rounded-3xl bg-black border border-neutral-900 w-full flex-1 flex items-center justify-center shadow-2xl min-h-[460px] max-h-[520px] p-6">
+              <div id="carousel" class="relative h-full w-full flex items-center justify-center overflow-hidden">
+                <!-- Slides -->
+                <div class="absolute inset-0 transition-opacity duration-700 ease-out opacity-100 flex items-center justify-center" data-index="0">
+                  <div class="relative z-10 w-full h-full flex items-center justify-center">
+                    <img src="https://i.ibb.co/FLpj2hQk/fahimphotographyfilms2026-07-21-08-58-2359077df7-97b1-43f1-add8-4a1c7636b690.jpg" alt="Slide 1" class="max-h-[420px] w-auto h-auto object-contain rounded-2xl shadow-2xl border border-neutral-900">
+                  </div>
+                </div>
+                <div class="absolute inset-0 transition-opacity duration-700 ease-out opacity-0 pointer-events-none flex items-center justify-center" data-index="1">
+                  <div class="relative z-10 w-full h-full flex items-center justify-center">
+                    <img src="https://i.ibb.co/fbhPQ8Q/fahimphotographyfilms2026-07-21-08-56-56a66dc1fd-3659-45c1-9650-021ea6acb873.jpg" alt="Slide 2" class="max-h-[420px] w-auto h-auto object-contain rounded-2xl shadow-2xl border border-neutral-900" loading="lazy">
+                  </div>
+                </div>
+                <div class="absolute inset-0 transition-opacity duration-700 ease-out opacity-0 pointer-events-none flex items-center justify-center" data-index="2">
+                  <div class="relative z-10 w-full h-full flex items-center justify-center">
+                    <img src="https://i.ibb.co/DDW5tZKD/fahimphotographyfilms2026-07-21-08-56-16cefa249d-a211-4474-b1b5-f2bdb267d9f9.jpg" alt="Slide 3" class="max-h-[420px] w-auto h-auto object-contain rounded-2xl shadow-2xl border border-neutral-900" loading="lazy">
+                  </div>
+                </div>
+                <div class="absolute inset-0 transition-opacity duration-700 ease-out opacity-0 pointer-events-none flex items-center justify-center" data-index="3">
+                  <div class="relative z-10 w-full h-full flex items-center justify-center">
+                    <img src="https://i.ibb.co/yzt3J8j/fahimphotographyfilms2026-07-21-08-56-000730d67f-f05d-4793-ac9e-581dba1b0de0.jpg" alt="Slide 4" class="max-h-[420px] w-auto h-auto object-contain rounded-2xl shadow-2xl border border-neutral-900" loading="lazy">
+                  </div>
+                </div>
+
+                <!-- Controls -->
+                <button id="prev" class="absolute left-3 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 items-center justify-center rounded-xl transition bg-neutral-900/90 text-white hover:bg-neutral-800 border border-neutral-800 z-30 cursor-pointer shadow-lg">
+                  <i data-lucide="chevron-left" class="h-4 w-4"></i>
+                </button>
+                <button id="next" class="absolute right-3 top-1/2 -translate-y-1/2 inline-flex h-9 w-9 transition hover:bg-neutral-800 text-white bg-neutral-900/90 rounded-xl items-center justify-center border border-neutral-800 z-30 cursor-pointer shadow-lg">
+                  <i data-lucide="chevron-right" class="h-4 w-4"></i>
+                </button>
+
+                <!-- Dots -->
+                <div id="dots" class="absolute bottom-3 inset-x-0 flex items-center justify-center gap-2 z-30"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Right: Profile & Social Links -->
+          <aside class="flex flex-col justify-between">
+            <div class="flex flex-col space-y-4 h-full">
+              <div class="border border-neutral-900 bg-black rounded-3xl p-6 shadow-xl">
+                <h2 class="text-xl font-semibold tracking-tight text-white">Fahim Rafi</h2>
+                <p class="text-xs uppercase tracking-widest text-neutral-500 mt-1">Photographer & Filmmaker</p>
+                <p class="mt-3 text-sm leading-6 text-neutral-400 font-light">
+                  We capture authentic moments and craft visual stories blending clean minimalism with cinematic emotion.
+                </p>
+              </div>
+              
+              <!-- Sidebar Profile Image Box (Hyperlink Removed, Popup Trigger Added) -->
+              <div class="border border-neutral-900 bg-black rounded-3xl p-3 shadow-xl flex-1 flex items-center justify-center relative overflow-hidden min-h-[220px]">
+                <div class="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-10 scale-110" style="background-image: url('https://i.ibb.co/WWc3hYhx/fahimphotographyfilms2026-07-21-08-56-40159020a4-9018-4658-af9f-0ebeffe75ca8.jpg');"></div>
+                <div class="relative z-10 w-full h-full flex items-center justify-center cursor-pointer">
+                  <img src="https://i.ibb.co/WWc3hYhx/fahimphotographyfilms2026-07-21-08-56-40159020a4-9018-4658-af9f-0ebeffe75ca8.jpg" alt="Fahim Rafi Profile" class="popup-trigger max-h-full max-w-full w-auto h-auto object-contain rounded-2xl shadow-2xl border border-neutral-900">
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <a href="https://wa.me/923312015198" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between rounded-2xl px-4 py-3 border transition bg-white text-black border-white hover:bg-neutral-200">
+                  <span class="text-xs font-semibold tracking-wider uppercase">WhatsApp Chat</span>
+                  <i data-lucide="message-circle" class="h-4 w-4 text-emerald-600"></i>
+                </a>
+                <a href="https://www.instagram.com/fahimphotographyfilms?igsh=NXAwazZ5MmE2ZWRk" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between rounded-2xl px-4 py-3 border transition bg-black border-neutral-900 hover:bg-neutral-950">
+                  <span class="text-xs font-semibold tracking-wider uppercase text-neutral-300">Instagram</span>
+                  <i data-lucide="instagram" class="h-4 w-4 text-neutral-500"></i>
+                </a>
+                <a href="mailto:fahim.photography12345@gmail.com" class="flex items-center justify-between rounded-2xl px-4 py-3 border transition bg-black border-neutral-900 hover:bg-neutral-950">
+                  <span class="text-xs font-semibold tracking-wider uppercase text-neutral-300">Contact Me</span>
+                  <i data-lucide="mail" class="h-4 w-4 text-neutral-500"></i>
+                </a>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- Portfolio Section -->
+      <section id="portfolio-section" class="bg-black border border-neutral-900 rounded-3xl mt-6 p-6 sm:p-8 scroll-mt-24 shadow-2xl">
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-[10px] font-medium text-neutral-500 uppercase tracking-widest">/Portfolio</p>
+          <span class="text-xs font-medium text-neutral-600">(03)</span>
+        </div>
+
+        <div class="flex gap-6 items-start justify-between mb-8">
+          <div class="max-w-3xl">
+            <h2 class="text-3xl md:text-5xl text-white font-light tracking-tight">Latest moments from my portfolio.</h2>
+            <p class="mt-3 text-sm md:text-base text-neutral-400 font-light">Portraits, editorials, and cinematic films by Fahim Rafi—minimal, calm, and intentional storytelling through light.</p>
+          </div>
+        </div>
+
+        <!-- Grid Cards -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <article class="lg:col-span-2 rounded-3xl p-1 border border-neutral-900 bg-neutral-950">
+            <div class="relative overflow-hidden rounded-2xl group cursor-pointer">
+              <img class="popup-trigger h-[360px] md:h-[460px] w-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/B5XpJ0LH/fahimphotographyfilms2026-07-21-09-29-559b97364a-8bd1-41fe-893e-5c246e03ea8e.jpg" alt="Editorial">
+              <span class="absolute right-3 top-3 rounded-full bg-black/80 px-3 py-1 text-[10px] font-medium text-white backdrop-blur border border-neutral-800 uppercase tracking-widest z-10">Editorial</span>
+              <div class="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black to-transparent"></div>
+              <div class="absolute left-5 right-5 bottom-5 text-white z-10">
+                <p class="text-[10px] font-medium text-neutral-500 uppercase tracking-widest">May 30, 2025</p>
+                <h3 class="mt-1 text-xl md:text-2xl font-light tracking-tight">The Power of Restraint in Photography</h3>
+                <p class="mt-2 text-xs text-neutral-400 font-light">How simplicity, negative space, and patient framing amplify emotion and create timeless images.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="rounded-3xl p-1 border border-neutral-900 bg-neutral-950 flex flex-col justify-between">
+            <div class="overflow-hidden rounded-2xl relative group cursor-pointer">
+              <img class="popup-trigger h-[240px] md:h-[260px] w-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/SXcSbc8K/fahimphotographyfilms2026-07-21-09-37-3261132c1c-cc29-43f0-97e0-a8d9d93accb0.jpg" alt="Portrait">
+              <span class="absolute right-3 top-3 rounded-full bg-black/80 px-3 py-1 text-[10px] font-medium text-white backdrop-blur border border-neutral-800 uppercase tracking-widest z-10">Portrait</span>
+            </div>
+            <div class="px-4 pt-4 pb-6">
+              <p class="text-[10px] font-medium text-neutral-500 uppercase tracking-widest">May 23, 2025</p>
+              <h4 class="mt-1 text-base font-medium tracking-tight text-white">Designing for Calm: Motion in Portraits</h4>
+              <p class="mt-2 text-xs text-neutral-400 font-light">Exploring blur, minimal palettes, and subtle pacing to shape emotional response.</p>
+            </div>
+          </article>
+
+          <article class="border border-neutral-900 bg-neutral-950 rounded-3xl p-1 flex flex-col justify-between">
+            <div class="overflow-hidden rounded-2xl relative group cursor-pointer">
+              <img class="popup-trigger h-[240px] md:h-[260px] w-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/v4C3QyF3/fahimphotographyfilms2026-07-21-09-25-226935c315-5382-4a71-88e7-9d5b8be010cb.jpg" alt="Studio">
+              <span class="absolute right-3 top-3 rounded-full bg-black/80 px-3 py-1 text-[10px] font-medium text-white backdrop-blur border border-neutral-800 uppercase tracking-widest z-10">Studio</span>
+            </div>
+            <div class="px-4 pt-4 pb-6">
+              <p class="text-[10px] font-medium text-neutral-500 uppercase tracking-widest">May 16, 2025</p>
+              <h4 class="mt-1 text-base font-medium tracking-tight text-white">Building a Timeless Aesthetic</h4>
+              <p class="mt-2 text-xs text-neutral-400 font-light">Creating images that transcend trends through light, form, and honest expression.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- All Projects Album Section -->
+      <section class="bg-black border border-neutral-900 rounded-3xl mt-6 p-6 sm:p-8 shadow-2xl">
+        <div class="flex items-center justify-between mb-4">
+          <p class="text-[10px] font-medium text-neutral-500 uppercase tracking-widest">/Projects Album</p>
+          <span class="text-xs font-medium text-neutral-600">Folder</span>
+        </div>
+
+        <div class="flex gap-6 items-start justify-between mb-8">
+          <div class="max-w-3xl">
+            <h2 class="text-3xl md:text-5xl text-white font-light tracking-tight">Complete Works Archive.</h2>
+            <p class="mt-3 text-sm md:text-base text-neutral-400 font-light">Explore our entire collection of 41 curated cinematic captures and studio highlights in one single folder.</p>
+          </div>
+        </div>
+
+        <!-- Single Folder Card -->
+        <div class="border border-neutral-900 bg-neutral-950 rounded-3xl p-2 max-w-xl mx-auto shadow-xl">
+          <div class="overflow-hidden rounded-2xl relative group">
+            <img class="h-[300px] w-full object-cover transition duration-500 group-hover:scale-105" src="https://i.ibb.co/TD0kQhrB/fahimphotographyfilms2026-07-21-10-15-33392aa4d2-1b2b-4cab-9113-709c1727ec3d.jpg" alt="Projects Folder Cover">
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center">
+              <div class="text-center text-white p-4">
+                <span class="text-[10px] uppercase tracking-widest bg-white/20 backdrop-blur px-3 py-1 rounded-full font-medium border border-white/20">41 Photos Album</span>
+                <h3 class="text-2xl font-light mt-3 tracking-tight">Fahim Studio Archive</h3>
+              </div>
+            </div>
+          </div>
+          <div class="p-6 text-center">
+            <p class="text-xs text-neutral-400 mb-5 font-light">Click below to open the complete gallery album and browse all captured moments.</p>
+            <button id="openGalleryModal" class="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3 rounded-2xl bg-white text-black text-xs font-semibold tracking-wider uppercase hover:bg-neutral-200 transition cursor-pointer shadow-lg">
+              View Gallery Album <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about-section" class="bg-black border border-neutral-900 rounded-3xl mt-6 p-6 sm:p-8 scroll-mt-24 shadow-2xl">
+        <div class="flex items-center justify-between mb-6">
+          <p class="text-[10px] font-medium text-neutral-500 uppercase tracking-widest">/About</p>
+          <span class="text-xs font-medium text-neutral-600">(02)</span>
+        </div>
+
+        <h3 class="text-3xl md:text-5xl text-white mb-8 font-light tracking-tight">Behind the lens.</h3>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div class="lg:col-span-8">
+            <div class="relative overflow-hidden bg-neutral-950 border border-neutral-900 rounded-3xl shadow-xl">
+              <img class="popup-trigger h-80 sm:h-96 w-full object-cover cursor-pointer transition duration-500 hover:scale-105" src="https://i.ibb.co/ymtnfzSV/fahim-rafi7862026-07-21-09-45-37ee4b3630-1b07-4378-8312-640b210616d9.jpg" alt="Fahim Rafi">
+              <div class="p-6">
+                <p class="text-base text-neutral-200 leading-relaxed mb-4 font-light">
+                  Creating minimal, calm, and intentional photography & films that tell authentic stories through light and motion.
+                </p>
+                <p class="text-sm text-neutral-400 font-light">
+                  My approach blends clean minimalism with soft emotion, capturing genuine moments that feel both timeless and deeply personal. Every frame is composed with intention, focusing on the subtle interplay between light, shadow, and expression.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <div class="lg:col-span-4 flex flex-col gap-6">
+            <div class="border border-neutral-900 bg-neutral-950 rounded-3xl p-6 shadow-xl">
+              <div class="flex gap-2 text-[10px] text-neutral-500 mb-4 items-center uppercase tracking-widest">
+                <i data-lucide="bar-chart-2" class="h-3.5 w-3.5"></i>
+                <span>By the Numbers</span>
+              </div>
+              <div class="space-y-4">
+                <div>
+                  <p class="text-2xl text-white font-light">2000+</p>
+                  <p class="text-xs text-neutral-400 font-light">Projects Completed</p>
+                </div>
+                <div>
+                  <p class="text-2xl text-white font-light">12</p>
+                  <p class="text-xs text-neutral-400 font-light">Years Experience</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="border border-neutral-900 bg-neutral-950 rounded-3xl p-6 text-white shadow-xl">
+              <div class="flex items-center gap-2 text-neutral-500 text-[10px] mb-4 uppercase tracking-widest">
+                <i data-lucide="camera" class="h-3.5 w-3.5"></i>
+                <span>Equipment</span>
+              </div>
+              <div class="space-y-3 text-xs">
+                <div class="flex justify-between"><span class="text-neutral-200">Canon R5</span><span class="text-neutral-600">Primary</span></div>
+                <div class="flex justify-between"><span class="text-neutral-200">Sony A7S III</span><span class="text-neutral-600">Cinema</span></div>
+                <div class="flex justify-between"><span class="text-neutral-200">85mm f/1.4</span><span class="text-neutral-600">Portrait</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials Banner -->
+      <section class="relative overflow-hidden bg-black border border-neutral-900 rounded-3xl mt-6 p-10 sm:p-12 text-center text-white shadow-2xl">
+        <div class="relative max-w-4xl mx-auto">
+          <p class="text-[10px] font-medium text-neutral-500 uppercase tracking-widest mb-4">/Testimonials</p>
+          <h2 class="text-2xl sm:text-4xl text-white font-light leading-snug">
+            Clients say working with Fahim Photography & Films blends thoughtful direction and meticulous light—helping brands grow with confidence.
+          </h2>
+          <button id="openReviewsModal" class="mt-8 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold uppercase tracking-wider bg-white text-black hover:bg-neutral-200 transition cursor-pointer shadow-lg">
+            Read all reviews
+            <i data-lucide="arrow-up-right" class="h-4 w-4"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section class="relative overflow-hidden bg-black border border-neutral-900 rounded-3xl mt-6 p-6 sm:p-8 shadow-2xl">
+        <div class="flex items-center justify-between mb-6 text-neutral-500">
+          <p class="text-[10px] uppercase tracking-widest">/Services</p>
+          <span class="text-xs">(03)</span>
+        </div>
+        
+        <h2 class="text-3xl sm:text-5xl text-white leading-tight mb-8 font-light">
+          Photography & Film packages designed for clarity and results.
+        </h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <article class="bg-neutral-950 border border-neutral-900 rounded-3xl p-6 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl text-white font-light text-center">Photography</h3>
+              <p class="text-center font-medium text-base mt-4 text-neutral-200">Rs 20,000/- to Rs 30,000/-</p>
+            </div>
+            <a href="https://wa.me/923312015198?text=Hi%20Fahim%20Rafi,%20I%20want%20to%20reserve%20Photography." target="_blank" rel="noopener noreferrer" class="mt-6 w-full inline-block text-center rounded-xl bg-white text-black py-2.5 text-xs font-semibold uppercase tracking-wider hover:bg-neutral-200 transition shadow">Reserve Now</a>
+          </article>
+
+          <article class="bg-neutral-950 border border-neutral-900 rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden">
+            <span class="absolute top-4 right-4 text-[9px] uppercase tracking-widest bg-white/10 text-white px-2.5 py-1 rounded-full border border-white/10">Popular</span>
+            <div>
+              <h3 class="text-xl text-white font-light text-center mt-2">Cinematic Videos</h3>
+              <p class="text-center font-medium text-base mt-4 text-neutral-200">Rs 60,000 to 120,000/-</p>
+            </div>
+            <a href="https://wa.me/923312015198?text=Hi%20Fahim%20Rafi,%20I%20want%20to%20reserve%20Cinematic%20Videos." target="_blank" rel="noopener noreferrer" class="mt-6 w-full inline-block text-center rounded-xl bg-white text-black py-2.5 text-xs font-semibold uppercase tracking-wider hover:bg-neutral-200 transition shadow">Reserve Now</a>
+          </article>
+
+          <article class="bg-neutral-950 border border-neutral-900 rounded-3xl p-6 flex flex-col justify-between">
+            <div>
+              <h3 class="text-xl text-white font-light text-center">Photography And Video Graphy</h3>
+              <p class="text-center font-medium text-base mt-4 text-neutral-200">Rs 120,000/- to Rs 300,000/-</p>
+            </div>
+            <a href="https://wa.me/923312015198?text=Hi%20Fahim%20Rafi,%20I%20want%20to%20reserve%20Photography%20And%20Video%20Graphy." target="_blank" rel="noopener noreferrer" class="mt-6 w-full inline-block text-center rounded-xl bg-white text-black py-2.5 text-xs font-semibold uppercase tracking-wider hover:bg-neutral-200 transition shadow">Reserve Now</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="mt-6">
+        <div class="w-full rounded-3xl bg-black border border-neutral-900 text-white p-6 sm:p-8 shadow-2xl">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="flex flex-col justify-between">
+              <h3 class="text-3xl sm:text-4xl font-light tracking-tight">FAHIM STUDIO</h3>
+              <div class="mt-6 space-y-1">
+                <p class="text-xs text-neutral-500 font-light">03312015198</p>
+                <p class="text-sm sm:text-base font-light break-all text-neutral-300">fahim.photography12345@gmail.com</p>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="text-lg font-light tracking-wide text-white">About Studio</h4>
+              <p class="mt-2 text-xs text-neutral-400 leading-relaxed font-light">
+                Dedicated to capturing timeless stories through clean minimalism and cinematic emotion. With over 12 years of expertise, we turn moments into lasting visual art.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-8 text-xs">
+              <ul class="space-y-2">
+                <li><a href="#about-section" class="text-neutral-400 hover:text-white transition">About</a></li>
+                <li><a href="#" id="footerGalleryBtn" class="text-neutral-400 hover:text-white transition cursor-pointer">Gallery</a></li>
+                <li><a href="mailto:fahim.photography12345@gmail.com" class="text-neutral-400 hover:text-white transition">Contact</a></li>
+              </ul>
+              <ul class="space-y-2">
+                <li><a href="https://wa.me/923312015198" target="_blank" rel="noopener noreferrer" class="text-neutral-400 hover:text-white transition">WhatsApp</a></li>
+                <li><a href="https://www.instagram.com/fahimphotographyfilms?igsh=NXAwazZ5MmE2ZWRk" target="_blank" rel="noopener noreferrer" class="text-neutral-400 hover:text-white transition">Instagram</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-neutral-900 flex flex-col sm:flex-row justify-between text-[11px] text-neutral-600 font-light gap-4">
+            <p>© 2026 Fahim Photography & Films. All rights reserved.</p>
+            <p>Minimal, calm, and intentional photography & films.</p>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Mobile Menu Toggle logic
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Carousel logic
+    const slides = Array.from(document.querySelectorAll('#carousel [data-index]'));
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    const dotsWrap = document.getElementById('dots');
+    let current = 0;
+
+    function renderDots() {
+      dotsWrap.innerHTML = '';
+      slides.forEach((_, i) => {
+        const b = document.createElement('button');
+        b.className = 'h-1.5 w-1.5 rounded-full transition-all ' + (i === current ? 'bg-white w-4' : 'bg-neutral-700 hover:bg-neutral-500');
+        b.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+        b.addEventListener('click', () => go(i));
+        dotsWrap.appendChild(b);
+      });
+    }
+
+    function go(index) {
+      slides.forEach((s, i) => {
+        if (i === index) {
+          s.classList.remove('opacity-0', 'pointer-events-none');
+          s.classList.add('opacity-100');
+        } else {
+          s.classList.add('opacity-0', 'pointer-events-none');
+          s.classList.remove('opacity-100');
+        }
+      });
+      current = index;
+      renderDots();
+    }
+
+    prev.addEventListener('click', () => go((current - 1 + slides.length) % slides.length));
+    next.addEventListener('click', () => go((current + 1) % slides.length));
+
+    let auto = setInterval(() => next.click(), 6000);
+    document.getElementById('carousel').addEventListener('mouseenter', () => clearInterval(auto));
+    document.getElementById('carousel').addEventListener('mouseleave', () => auto = setInterval(() => next.click(), 6000));
+
+    renderDots();
+
+    // Lightbox / Popup Modal Logic for Multiple Images
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    const closeModal = document.getElementById('closeModal');
+    const triggers = document.querySelectorAll('.popup-trigger');
+
+    triggers.forEach(img => {
+      img.addEventListener('click', () => {
+        modalImg.src = img.src;
+        modal.classList.remove('hidden');
+      });
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+
+    // Gallery Modal Logic
+    const galleryModal = document.getElementById('galleryModal');
+    const openGalleryModal = document.getElementById('openGalleryModal');
+    const closeGalleryModal = document.getElementById('closeGalleryModal');
+    const footerGalleryBtn = document.getElementById('footerGalleryBtn');
+    const navGalleryBtn = document.getElementById('navGalleryBtn');
+    const mobileGalleryBtn = document.getElementById('mobileGalleryBtn');
+    const mobileWorkBtn = document.getElementById('mobileWorkBtn');
+    const mobileAboutBtn = document.getElementById('mobileAboutBtn');
+
+    openGalleryModal.addEventListener('click', () => {
+      galleryModal.classList.remove('hidden');
+    });
+
+    footerGalleryBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      galleryModal.classList.remove('hidden');
+    });
+
+    navGalleryBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      galleryModal.classList.remove('hidden');
+    });
+
+    mobileGalleryBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      mobileMenu.classList.add('hidden');
+      galleryModal.classList.remove('hidden');
+    });
+
+    mobileWorkBtn.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+    });
+
+    mobileAboutBtn.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+    });
+
+    closeGalleryModal.addEventListener('click', () => {
+      galleryModal.classList.add('hidden');
+    });
+
+    galleryModal.addEventListener('click', (e) => {
+      if (e.target === galleryModal) {
+        galleryModal.classList.add('hidden');
+      }
+    });
+
+    // Reviews Modal Logic
+    const reviewsModal = document.getElementById('reviewsModal');
+    const openReviewsModal = document.getElementById('openReviewsModal');
+    const closeReviewsModal = document.getElementById('closeReviewsModal');
+
+    openReviewsModal.addEventListener('click', () => {
+      reviewsModal.classList.remove('hidden');
+    });
+
+    closeReviewsModal.addEventListener('click', () => {
+      reviewsModal.classList.add('hidden');
+    });
+
+    reviewsModal.addEventListener('click', (e) => {
+      if (e.target === reviewsModal) {
+        reviewsModal.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
